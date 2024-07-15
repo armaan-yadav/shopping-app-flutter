@@ -31,7 +31,6 @@ class _ProductListState extends State<ProductList> {
 
   @override
   Widget build(BuildContext context) {
-    print(filteredProducts);
     const border = OutlineInputBorder(
       borderRadius: BorderRadius.horizontal(
         left: Radius.circular(30),

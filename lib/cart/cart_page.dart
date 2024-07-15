@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoping_app/cart/cart_item.dart';
+import 'package:shoping_app/cart/cart_total.dart';
 import 'package:shoping_app/provider/cart_provider.dart';
 
 class CartPage extends StatefulWidget {
@@ -13,12 +14,9 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
-    // final cartItems = Provider.of<CartProvider>(
-    //   context,
-    //   listen: true,
-    // ).cartItems;
+    Provider.of<CartProvider>(context).updateTotal();
+    final total = context.watch<CartProvider>().total;
     final cartItems = context.watch<CartProvider>().cartItems;
-
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -74,7 +72,7 @@ class _CartPageState extends State<CartPage> {
                     ],
                   ),
                 ),
-                // CartTotal(total: total),
+                CartTotal(total: total),
               ],
             ),
     );

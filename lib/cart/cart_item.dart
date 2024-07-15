@@ -15,13 +15,24 @@ class CartItem extends StatefulWidget {
 }
 
 class _CartItemState extends State<CartItem> {
-  void onTap() {
+  void removeCompleteItem() {
     Provider.of<CartProvider>(context, listen: false)
         .removeCompleteItemFromCart(widget.product!);
   }
 
+  void increaseItemQuantity() {
+    Provider.of<CartProvider>(context, listen: false)
+        .increaseItemQuantityToCart(widget.product?["id"]);
+  }
+
+  void decreaseItemQuantity() {
+    Provider.of<CartProvider>(context, listen: false)
+        .decreaseItemQuantityToCart(widget.product?["id"]);
+  }
+
   @override
   Widget build(BuildContext context) {
+    Provider.of<CartProvider>(context).updateTotal();
     final title = widget.product?["title"];
     final price = widget.product?["price"] as double;
     final imageUrl = widget.product?["imageUrl"];
@@ -72,13 +83,11 @@ class _CartItemState extends State<CartItem> {
                           setState(() {
                             quantity--;
                           });
-                          if (quantity > 1) {
-                            // widget.onRemoveItemQuantity(id);
+                          if (quantity >= 1) {
+                            decreaseItemQuantity();
                           } else {
-                            // widget.onRemoveCompleteItem(id);
-                            onTap();
+                            removeCompleteItem();
                           }
-                          // widget.removeTotal(price * quantity);
                         },
                         child: const Icon(Icons.remove),
                       ),
@@ -88,11 +97,10 @@ class _CartItemState extends State<CartItem> {
                         fillColor: Colors.red,
                         shape: const CircleBorder(),
                         onPressed: () {
-                          // widget.onAddItemQuantity(id);
                           setState(() {
                             quantity++;
                           });
-                          // widget.updateTotal(price * quantity);
+                          increaseItemQuantity();
                         },
                         child: const Icon(Icons.add),
                       ),
