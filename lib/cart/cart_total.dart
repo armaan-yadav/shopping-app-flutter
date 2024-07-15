@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartTotal extends StatelessWidget {
   const CartTotal({
@@ -10,6 +11,7 @@ class CartTotal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(

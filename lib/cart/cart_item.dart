@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shoping_app/provider/cart_provider.dart';
 
 class CartItem extends StatefulWidget {
-  final Map? product;
-  final Function(int) onRemoveCompleteItem;
-  final Function(int) onAddItemQuantity;
-  final Function(int) onRemoveItemQuantity;
-  final Function(double) updateTotal;
-  final Function(double) removeTotal;
+  final Map<String, dynamic>? product;
+
   const CartItem({
     super.key,
     this.product,
-    required this.updateTotal,
-    required this.removeTotal,
-    required this.onRemoveCompleteItem,
-    required this.onAddItemQuantity,
-    required this.onRemoveItemQuantity,
   });
 
   @override
@@ -22,9 +15,13 @@ class CartItem extends StatefulWidget {
 }
 
 class _CartItemState extends State<CartItem> {
+  void onTap() {
+    Provider.of<CartProvider>(context)
+        .removeCompleteItemFromCart(widget.product!);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final id = widget.product?["id"];
     final title = widget.product?["title"];
     final price = widget.product?["price"] as double;
     final imageUrl = widget.product?["imageUrl"];
@@ -76,9 +73,9 @@ class _CartItemState extends State<CartItem> {
                             quantity--;
                           });
                           if (quantity >= 1) {
-                            widget.onRemoveItemQuantity(id);
+                            // widget.onRemoveItemQuantity(id);
                           } else {
-                            widget.onRemoveCompleteItem(id);
+                            // widget.onRemoveCompleteItem(id);
                           }
                           // widget.removeTotal(price * quantity);
                         },
@@ -90,7 +87,7 @@ class _CartItemState extends State<CartItem> {
                         fillColor: Colors.red,
                         shape: const CircleBorder(),
                         onPressed: () {
-                          widget.onAddItemQuantity(id);
+                          // widget.onAddItemQuantity(id);
                           setState(() {
                             quantity++;
                           });

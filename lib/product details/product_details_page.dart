@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shoping_app/global_variables.dart';
+import 'package:provider/provider.dart';
+import 'package:shoping_app/provider/cart_provider.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final Map<String, dynamic>? product;
@@ -11,7 +12,14 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   int? currentSize = 0;
-  bool showText = false;
+
+  void addItemToCart() {
+    Provider.of<CartProvider>(context, listen: false).addCompleteItemToCart({
+      ...widget.product!,
+      "quantity": 1,
+      "currentSize": currentSize,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +27,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     final price = widget.product?["price"];
     final sizes = widget.product?["sizes"] as List;
     final imageUrl = widget.product?["imageUrl"];
+
     return Scaffold(
       appBar: AppBar(
         title: const Center(
@@ -87,7 +96,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             } else {
                               setState(() {
                                 currentSize = sizes[index];
-                                showText = false;
                               });
                             }
                           },
@@ -101,15 +109,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       },
                     ),
                   ),
-                  if (showText)
-                    const Text(
-                      "Select A Size!!",
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 17,
-                      ),
-                    ),
-
                   //! Add to Cart
                   Container(
                     width: double.infinity,
@@ -122,15 +121,28 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ),
                       onPressed: () {
                         if (currentSize != 0) {
-                          cart.add({
-                            ...widget.product!,
-                            "currentSize": currentSize,
-                            "quantity": 1,
-                          });
+                          addItemToCart();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              duration: Durations.medium1,
+                              content: Text("Added to cart",
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                  )),
+                            ),
+                          );
                         } else {
-                          setState(() {
-                            showText = true;
-                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              duration: Durations.medium1,
+                              content: Text(
+                                "Select A Size!",
+                                style: TextStyle(
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ),
+                          );
                         }
                       },
                       label: const Text(
