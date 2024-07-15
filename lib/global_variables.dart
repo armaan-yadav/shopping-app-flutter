@@ -1,7 +1,5 @@
 //dummmy data;
 
-import 'dart:ffi';
-
 final List<Map<String, dynamic>> products = [
   {
     "id": 1,

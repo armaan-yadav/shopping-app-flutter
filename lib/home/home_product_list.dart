@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoping_app/global_variables.dart';
-import 'package:shoping_app/home/product_card.dart';
+import 'package:shoping_app/home/home_product_card.dart';
 import 'package:shoping_app/product%20details/product_details_page.dart';
 
 class ProductList extends StatefulWidget {
@@ -27,8 +27,11 @@ class _ProductListState extends State<ProductList> {
     selectedFilter = filters[0];
   }
 
+  List<Map<String, dynamic>> filteredProducts = products;
+
   @override
   Widget build(BuildContext context) {
+    print(filteredProducts);
     const border = OutlineInputBorder(
       borderRadius: BorderRadius.horizontal(
         left: Radius.circular(30),
@@ -82,6 +85,14 @@ class _ProductListState extends State<ProductList> {
                     onTap: () {
                       setState(() {
                         selectedFilter = filter;
+                        selectedFilter == "All"
+                            ? filteredProducts = products
+                            : filteredProducts = products
+                                .where(
+                                  (element) =>
+                                      element["title"].contains(selectedFilter),
+                                )
+                                .toList();
                       });
                     },
                     child: Chip(
@@ -117,9 +128,9 @@ class _ProductListState extends State<ProductList> {
           //! Product Cards
           Expanded(
             child: ListView.builder(
-              itemCount: products.length,
+              itemCount: filteredProducts.length,
               itemBuilder: (context, index) {
-                final product = products[index];
+                final product = filteredProducts[index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(

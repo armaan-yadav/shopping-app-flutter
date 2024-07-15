@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shoping_app/cart/cart_page.dart';
-// import 'package:shoping_app/global_variables.dart';
 import 'package:shoping_app/home/home_page.dart';
 import 'package:shoping_app/provider/cart_provider.dart';
-// import 'package:shoping_app/home_page.dart';
-// import 'package:shoping_app/product_details_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,10 +13,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.debugCheckInvalidValueType = null;
-    return Provider(
-      create: (context) {
-        return CartProvider();
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => CartProvider(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Shopping App",

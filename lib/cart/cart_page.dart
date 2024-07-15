@@ -11,13 +11,13 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-
   @override
   Widget build(BuildContext context) {
-    final cartItems = Provider.of<CartProvider>(
-      context,
-      listen: true,
-    ).cartItems;
+    // final cartItems = Provider.of<CartProvider>(
+    //   context,
+    //   listen: true,
+    // ).cartItems;
+    final cartItems = context.watch<CartProvider>().cartItems;
 
     return Scaffold(
       appBar: AppBar(

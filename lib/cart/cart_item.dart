@@ -16,7 +16,7 @@ class CartItem extends StatefulWidget {
 
 class _CartItemState extends State<CartItem> {
   void onTap() {
-    Provider.of<CartProvider>(context)
+    Provider.of<CartProvider>(context, listen: false)
         .removeCompleteItemFromCart(widget.product!);
   }
 
@@ -72,10 +72,11 @@ class _CartItemState extends State<CartItem> {
                           setState(() {
                             quantity--;
                           });
-                          if (quantity >= 1) {
+                          if (quantity > 1) {
                             // widget.onRemoveItemQuantity(id);
                           } else {
                             // widget.onRemoveCompleteItem(id);
+                            onTap();
                           }
                           // widget.removeTotal(price * quantity);
                         },
