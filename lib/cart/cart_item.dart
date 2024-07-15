@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CartItem extends StatefulWidget {
   final Map? product;
   final Function(int) onRemoveCompleteItem;
   final Function(int) onAddItemQuantity;
   final Function(int) onRemoveItemQuantity;
+  final Function(double) updateTotal;
+  final Function(double) removeTotal;
   const CartItem({
     super.key,
     this.product,
+    required this.updateTotal,
+    required this.removeTotal,
     required this.onRemoveCompleteItem,
     required this.onAddItemQuantity,
     required this.onRemoveItemQuantity,
@@ -72,14 +75,12 @@ class _CartItemState extends State<CartItem> {
                           setState(() {
                             quantity--;
                           });
-                          // if (quantity <= 0) {
-                          //   widget.onRemoveCompleteItem(id);
-                          // }
-                          if (quantity > 0) {
+                          if (quantity >= 1) {
                             widget.onRemoveItemQuantity(id);
                           } else {
                             widget.onRemoveCompleteItem(id);
                           }
+                          // widget.removeTotal(price * quantity);
                         },
                         child: const Icon(Icons.remove),
                       ),
@@ -93,6 +94,7 @@ class _CartItemState extends State<CartItem> {
                           setState(() {
                             quantity++;
                           });
+                          // widget.updateTotal(price * quantity);
                         },
                         child: const Icon(Icons.add),
                       ),

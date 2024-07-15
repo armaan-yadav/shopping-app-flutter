@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shoping_app/cart/cart_item.dart';
+import 'package:shoping_app/cart/cart_total.dart';
 import 'package:shoping_app/global_variables.dart';
 
 class CartPage extends StatefulWidget {
@@ -10,6 +11,8 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  double total = 0;
+
   void _removeItemFromCart(int id) {
     setState(() {
       cart.removeWhere((item) => item['id'] == id);
@@ -20,9 +23,10 @@ class _CartPageState extends State<CartPage> {
     setState(() {
       final c = cart.where((item) => item['id'] == id);
       final d = c.toList()[0];
+      int currentIndex = cart.indexOf(d);
       d["quantity"] -= 1;
       cart.removeWhere((item) => item['id'] == id);
-      cart.add(d);
+      cart.insert(currentIndex, d);
     });
   }
 
@@ -30,10 +34,25 @@ class _CartPageState extends State<CartPage> {
     setState(() {
       final c = cart.where((item) => item['id'] == id);
       final d = c.toList()[0];
+      int currentIndex = cart.indexOf(d);
       d["quantity"] += 1;
       cart.removeWhere((item) => item['id'] == id);
-      cart.add(d);
+      cart.insert(currentIndex, d);
     });
+  }
+
+  void _addToTotal(double value) {
+    setState(() {
+      total += value;
+    });
+  }
+
+  void _removeToTotal(double value) {
+    if (total >= 0) {
+      setState(() {
+        total -= value;
+      });
+    }
   }
 
   @override
@@ -73,26 +92,34 @@ class _CartPageState extends State<CartPage> {
                 ],
               ),
             )
-          : Container(
-              margin: const EdgeInsets.all(8),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: cart.length,
-                      itemBuilder: (context, index) {
-                        final currentItem = cart[index];
-                        return CartItem(
-                          product: currentItem,
-                          onRemoveCompleteItem: _removeItemFromCart,
-                          onAddItemQuantity: _increaseItemQuantityIntoCart,
-                          onRemoveItemQuantity: _decreaseItemQuantityIntoCart,
-                        );
-                      },
-                    ),
+          : Stack(
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: cart.length,
+                          itemBuilder: (context, index) {
+                            final currentItem = cart[index];
+                            return CartItem(
+                              product: currentItem,
+                              onRemoveCompleteItem: _removeItemFromCart,
+                              onAddItemQuantity: _increaseItemQuantityIntoCart,
+                              onRemoveItemQuantity:
+                                  _decreaseItemQuantityIntoCart,
+                              updateTotal: _addToTotal,
+                              removeTotal: _removeToTotal,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                CartTotal(total: total),
+              ],
             ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shoping_app/cart/cart_page.dart';
@@ -46,9 +47,9 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             //! Header
-            Row(
+            const Row(
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.fromLTRB(10, 10, 30, 10),
                   child: Text(
                     "Shopping\nApp",
@@ -58,33 +59,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const CartPage();
-                          },
-                        ),
-                      );
-                    },
-                    child: Column(
-                      children: [
-                        const Icon(
-                          Icons.trolley,
-                          size: 40,
-                        ),
-                        Text(
-                          "My Cart (${cart.length})",
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const Expanded(
+                Expanded(
                   child: TextField(
                     decoration: InputDecoration(
                       border: border,
@@ -171,6 +146,44 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            label: "Home",
+            icon: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const HomePage();
+                    },
+                  ),
+                );
+              },
+              child: const Icon(
+                Icons.home,
+              ),
+            ),
+          ),
+          BottomNavigationBarItem(
+            label: "Cart",
+            icon: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const CartPage();
+                    },
+                  ),
+                );
+              },
+              child: const Icon(
+                Icons.trolley,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
